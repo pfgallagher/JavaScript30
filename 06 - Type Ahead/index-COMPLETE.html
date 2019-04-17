@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Type Ahead 👀</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+	<form class="search-form">
+		<input type="text" class="search" placeholder="City or State">
+		<ul class="suggestions">
+			<li>Filter for a city</li>
+			<li>or a state</li>
+		</ul>
+	</form>
+	<script>
+		const suggestions = document.querySelector(".suggestions");
+		const cities = [];
+		(async () => {
+			const data = await (await fetch(
+				'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json'
+			)).json();
+			cities.push(...data);
+		})();
+
+		document.querySelector(".search").addEventListener("input", event => {
+			const regexp = new RegExp(event.target.value, "gi");
+
+			[...suggestions.children].forEach(child => {
+				suggestions.removeChild(child);
+			});
+
+			cities
+				.filter(el => `${el.city}, ${el.state}`.match(regexp))
+				.map(el =>
+					`<span class="name">${`${el.city}, ${el.state}`.replace(regexp, `<span class="hl">${event.target.value}</span>`)}</span>
+				<span class="population">${Number(el.population).toLocaleString()}</span>`)
+				.forEach(el => {
+					const cityNode = document.createElement("li");
+					cityNode.innerHTML = el;
+					suggestions.appendChild(cityNode);
+				});
+		});
+	</script>
+</body>
+
+</html>
