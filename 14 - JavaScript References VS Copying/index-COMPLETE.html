@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>JS Reference VS Copy</title>
+</head>
+
+<body>
+
+	<script>
+		const players = ["Wes", "Sarah", "Ryan", "Poppy"];
+		const team = players.slice();
+		const team2 = [].concat(players);
+		const team3 = [...players];
+		const team4 = Array.from(players);
+		console.log(team);
+		console.log(team2);
+		console.log(team3);
+		console.log(team4);
+
+		const person = {
+			name: "Wes Bos",
+			age: 80,
+			social: {
+				twitter: "@wesbos",
+				facebook: "wesbos.developer",
+				test: {
+					test2: {
+						test3: "test",
+					},
+				},
+			},
+		};
+
+		const dev = Object.assign({}, person);
+		const dev2 = JSON.parse(JSON.stringify(person));
+		const dev3 = {
+			...person
+		};
+		console.log(dev);
+		console.log(dev2);
+		console.log(dev3);
+	</script>
+
+</body>
+
+</html>
